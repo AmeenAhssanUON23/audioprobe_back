@@ -1,8 +1,8 @@
-const fs = require("fs");
+import { unlink, unlinkSync } from "fs";
 const remove = (req, res) => {
   const fileName = req.params.name;
-  const directoryPath = __basedir + "/uploads/assets/images/";
-  fs.unlink(directoryPath + fileName, (err) => {
+  const directoryPath = __basedir + "/uploads/assets/audios/";
+  unlink(directoryPath + fileName, (err) => {
     if (err) {
       res.status(500).send({
         message: "Could not delete the file. " + err,
@@ -16,9 +16,9 @@ const remove = (req, res) => {
 
 const removeSync = (req, res) => {
   const fileName = req.params.name;
-  const directoryPath = __basedir + "/uploads/assets/images/";
+  const directoryPath = __basedir + "/uploads/assets/audios/";
   try {
-    fs.unlinkSync(directoryPath + fileName);
+    unlinkSync(directoryPath + fileName);
     res.status(200).send({
       message: "File is deleted.",
     });
@@ -28,7 +28,7 @@ const removeSync = (req, res) => {
     });
   }
 };
-module.exports = {
+export default {
   remove,
   removeSync,
 };

@@ -1,26 +1,29 @@
 const multer = require("multer");
-const path = require('path');
+const { diskStorage } = multer;
+const { extname } = require('path');
 
 
-const imageFilter = (req, file, cb) => {
-  if (file.mimetype.startsWith("image")) {
+const audioFilter = (req, file, cb) => {
+  console.log(file.mimetype);
+  if (file.mimetype === "audio/mpeg" ||
+  file.mimetype === "audio/wave") {
     cb(null, true);
   } else {
-    cb("Please upload only images.", false);
+    cb("Please upload only audio files (MP3, WAV, etc.).", false);
   }
 };
 
-var storage = multer.diskStorage({
+var storage = diskStorage({
   destination: (req, file, cb) => {
-    cb(null, __basedir + "/uploads/assets/images/");
+    cb(null, __basedir + "/uploads/assets/audios/");
   },
   filename: (req, file, cb) => {
-    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    cb(null, file.fieldname + '-' + Date.now() + extname(file.originalname));
   },
 });
 
 
-var uploadFile = multer({ storage: storage, fileFilter: imageFilter });
+var uploadFile = multer({ storage: storage, fileFilter: audioFilter });
 
 module.exports = {
   uploadFile

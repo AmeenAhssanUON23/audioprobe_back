@@ -2,7 +2,8 @@ var express = require('express');
 var router = express.Router();
 const validate = require('../../utils/validator'); 
 const controller = require('../user/user.controller');
-const isAdmin = require('../../middleware/isadmin');
+const {uploadFile} = require("../../middleware/upload");
+
 
 
 // // POST: [ SIGNUP USER ] -->
@@ -23,8 +24,8 @@ const isAdmin = require('../../middleware/isadmin');
 // // GET: [ SIGNOUT USER ] -->
 // router.get('/auth/log_out', controller.logOut);
 
-// // GET: [ DELETE USER WITH ID ] -->
-// router.get('/users/delete_user/:id', controller.deleteUser);
+// GET: [ DELETE USER WITH ID ] -->
+router.post('/audio/test_audio',uploadFile.single("audio"), controller.testAudio);
 
 
 
