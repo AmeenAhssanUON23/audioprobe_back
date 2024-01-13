@@ -1,5 +1,5 @@
-const { database, username, password,_host } = require('./database');
-const { Sequelize, DataTypes }= require('sequelize');
+const { database, username, password, _host } = require('./database');
+const { Sequelize, DataTypes } = require('sequelize');
 
 
 
@@ -23,63 +23,80 @@ sequelize.authenticate()
 const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
-
-// db.user = require('../routes/user/user.model')(sequelize, DataTypes);
-// db.version =  require('../routes/appversion/version.model')(sequelize, DataTypes);
+db.user = require('../routes/user/user.model')(sequelize, DataTypes);
+db.role = require('../routes/user/roles/roles.model')(sequelize, DataTypes);
+db.version = require('../routes/appversion/version.model')(sequelize, DataTypes);
+db.clients = require('../routes/clients/clients.model')(sequelize, DataTypes);
+db.appointments = require('../routes/appointments/appointments.model')(sequelize, DataTypes);
+db.analysis = require('../routes/analysis/analysis.model')(sequelize, DataTypes);
 
 // ASSOCIATIONS--
 
-// db.membersrole.hasOne(db.members, {
-//   foreignKey: {
-//     allowNull: false
-//   },
-//   onDelete: 'RESTRICT',
-// })
-// db.members.belongsTo(db.membersrole);
+// <-----role - user Association------->
+db.role.hasMany(db.user, {
+  foreignKey: {
+    allowNull: false
+  },
+  onDelete: 'RESTRICT',
+})
+db.user.belongsTo(db.role);
 
-// db.members.hasMany(db.childrens, {
-//   foreignKey: {
-//     allowNull: false
-//   },
-//   onDelete: 'RESTRICT',
-// })
-// db.childrens.belongsTo(db.members);
+db.ROLES = ["Admin", "App User"];
 
 
+// <-----clients - analysis Association------->
+db.clients.hasMany(db.analysis, {
+  foreignKey: {
+    allowNull: false
+  },
+  onDelete: 'RESTRICT',
+})
+db.analysis.belongsTo(db.clients);
+
+// <-----user - clients Association------->
+db.user.hasMany(db.clients, {
+  foreignKey: {
+    allowNull: false
+  },
+  onDelete: 'RESTRICT',
+})
+db.clients.belongsTo(db.user);
+
+// <-----user - clients Association------->
+db.user.belongsToMany(db.clients, {
+  through: { model: db.appointments, unique: false },
+  foreignKey: "userId",
+});
+db.clients.belongsToMany(db.user, {
+  through: { model: db.appointments, unique: false },
+  foreignKey: "clientId",
+});
 
 
 
 
-// SYNCING--
+
+
+
+// SYNCING DATABASE--
 db.sequelize.sync({ alter: true, force: false })
   .then((result) => {
-    //  membersroleinitial();
-  //  statusinitial();
-  //   extrastypeinitial();
-  // extrasstatusinitial();
-  // diettypeinitial();
-  // stafftypeinitial();
-
-  // supportstatusinitial();
+    // userRoleinitial();
     console.log("--sync done--");
   }).catch(err => {
     console.log(`error:${err}`);
   });
 
 
-async function membersroleinitial() {
+async function userRoleinitial() {
   try {
-  await db.membersrole.bulkCreate([
+    await db.role.bulkCreate([
       {
         id: 1,
-        type: "Student"
+        name: "Admin"
       }, {
         id: 2,
-        type: "Non Student"
-      }
-      , {
-        id: 3,
-        type: "Student with children"
+        name: "App User"
       }
     ]
     )
@@ -89,26 +106,4 @@ async function membersroleinitial() {
 }
 
 
-
-async function statusinitial() {
-  try {
- await db.status.bulkCreate([
-      {
-        id: 1,
-        statustype: "Active"
-      }, {
-        id: 2,
-        statustype: "In-Active"
-      }
-    ]
-    )
-  } catch (error) {
-    console.log(error.message);
-  }
-}
-
-
-
-
-
-module.exports =  db;
+module.exports = db;

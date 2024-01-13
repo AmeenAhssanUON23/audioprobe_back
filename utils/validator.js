@@ -6,15 +6,16 @@ const getSchema = (type) => {
             return Joi.object().keys({
                 username: Joi.string().required().min(4),
                 fullname: Joi.string().required().min(4),
-                password: Joi.string().required().min(8),
+                password: Joi.string().required().min(4),
                 email: Joi.string().required().email(),
-                mobile: Joi.string().required()
+                mobile: Joi.string().required(),
+                roleId: Joi.number()
             })
         }
        
         case 'login': {
             return Joi.object().keys({
-                username: Joi.string().regex(/^[A-Za-z0-9]+$/).required(),
+                username: Joi.string().required(),
                 password: Joi.string().regex(/^[A-Za-z0-9]+$/).required()
             })
         }

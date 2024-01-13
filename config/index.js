@@ -1,4 +1,4 @@
-import { Router } from 'express';
+const { Router } = require('express');
 var router = Router();
 
 /* GET home page. */
