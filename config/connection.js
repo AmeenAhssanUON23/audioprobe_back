@@ -26,9 +26,11 @@ db.sequelize = sequelize;
 db.user = require('../routes/user/user.model')(sequelize, DataTypes);
 db.role = require('../routes/user/roles/roles.model')(sequelize, DataTypes);
 db.version = require('../routes/appversion/version.model')(sequelize, DataTypes);
+db.staff = require('../routes/staff/staff.model')(sequelize, DataTypes);
 db.clients = require('../routes/clients/clients.model')(sequelize, DataTypes);
 db.appointments = require('../routes/appointments/appointments.model')(sequelize, DataTypes);
 db.analysis = require('../routes/analysis/analysis.model')(sequelize, DataTypes);
+db.availabilty = require('../routes/availabilty/availability.model')(sequelize, DataTypes);
 
 // ASSOCIATIONS--
 
@@ -41,17 +43,28 @@ db.role.hasMany(db.user, {
 })
 db.user.belongsTo(db.role);
 
-db.ROLES = ["Admin", "App User"];
+db.ROLES = ["Admin", "Therapist"];
 
 
-// <-----clients - analysis Association------->
-db.clients.hasMany(db.analysis, {
+// <-----user - staff Association------->
+db.user.hasOne(db.staff, {
   foreignKey: {
     allowNull: false
   },
   onDelete: 'RESTRICT',
 })
-db.analysis.belongsTo(db.clients);
+db.staff.belongsTo(db.user);
+
+
+// <-----user - availabilty Association------->
+db.user.hasMany(db.availabilty, {
+  foreignKey: {
+    allowNull: false
+  },
+  onDelete: 'RESTRICT',
+})
+db.availabilty.belongsTo(db.user);
+
 
 // <-----user - clients Association------->
 db.user.hasMany(db.clients, {
@@ -61,6 +74,7 @@ db.user.hasMany(db.clients, {
   onDelete: 'RESTRICT',
 })
 db.clients.belongsTo(db.user);
+
 
 // <-----user - clients Association------->
 db.user.belongsToMany(db.clients, {
@@ -73,9 +87,14 @@ db.clients.belongsToMany(db.user, {
 });
 
 
-
-
-
+// <-----clients - analysis Association------->
+db.clients.hasMany(db.analysis, {
+  foreignKey: {
+    allowNull: false
+  },
+  onDelete: 'RESTRICT',
+})
+db.analysis.belongsTo(db.clients);
 
 
 // SYNCING DATABASE--
@@ -96,7 +115,7 @@ async function userRoleinitial() {
         name: "Admin"
       }, {
         id: 2,
-        name: "App User"
+        name: "Therapist"
       }
     ]
     )

@@ -1,13 +1,16 @@
 const db = require('../../config/connection');
 const analysis = db.analysis;
 const pg = require('../../utils/pagination');
+const { exec } = require('child_process');
+const { extname } = require('path');
 const { Op } = require("sequelize");
+const fs = require("fs");
 
 const addAnalysis = async (req, res) => {
     try {
         await analysis.create({
             analysis_data: req.body.analysis_data,
-            comments:req.body.comments,
+            comments: req.body.comments,
             clientId: req.body.clientId
         });
         res.send({
@@ -28,7 +31,7 @@ const updateAnalysis = async (req, res) => {
     try {
         await analysis.update(
             {
-                comments:req.body.comments,
+                comments: req.body.comments,
                 clientId: req.body.clientId,
             },
             {
@@ -47,15 +50,17 @@ const updateAnalysis = async (req, res) => {
     }
 }
 const getAllanalysis = async (req, res) => {
-    const {page, size, name} = req.query;
-    var filterbyname = name  ? { name: { [Op.like]: `%${name}%` } } : null;
-    var filterbyid =  name ? { id: { [Op.eq]: name } } : null;
-    var condition = name ? { [Op.or]: [
-        filterbyname,filterbyid
-    ]} :null;
+    const { page, size, name } = req.query;
+    var filterbyname = name ? { name: { [Op.like]: `%${name}%` } } : null;
+    var filterbyid = name ? { id: { [Op.eq]: name } } : null;
+    var condition = name ? {
+        [Op.or]: [
+            filterbyname, filterbyid
+        ]
+    } : null;
     const { limit, offset } = pg.getPagination(page, size);
     await analysis.findAndCountAll({
-        where:condition,
+        where: condition,
         limit, offset
     })
         .then(data => {
@@ -98,40 +103,57 @@ const deleteAnalysis = async (req, res) => {
 
 
 
-const testAudio = async (req, res) => {
-    const praatScriptPath = __basedir + "/praat_scripts/test9.praat";
-    // const audioFilePath = `${req.protocol}://${req.get('host')}/uploads/assets/audios/${req.file.filename}`;
+const getAudioAnalysis = async (req, res) => {
+    const praatScriptPath = __basedir + "/praat_scripts/t10.praat";
     const audioFilePath = __basedir + `/uploads/assets/audios/`;
-    // const textGridFilePath = "";
-    // const outputFilePath = "";
     try {
-    console.log(`${audioFilePath}`);
-    // const command = `praat --run ${praatScriptPath} ${audioFilePath} ${textGridFilePath} ${outputFilePath}`; 
-    const command = `praat --run ${praatScriptPath} ${audioFilePath}`; 
-
-    if (req.file == undefined) {
-        return res.send({ response: "failed", message: "You must select an Audio file" });
-      }else{
-        console.log("Audio executing---");
-    exec(command, (error, stdout, stderr) => {
-        if (error) {
-            console.error(`Error executing Praat command: ${error.message}`);
-            res.status(500).send({ response: "failed", message:'Error executing Praat command'});
-            return;
+        console.log(`${audioFilePath}`);
+        const command = `praat --run ${praatScriptPath} ${audioFilePath}`;
+        if (req.file == undefined) {
+            return res.send({ response: "failed", message: "You must select an Audio file" });
+        } else {
+            exec(command, (error, stdout, stderr) => {
+                console.log("Audio executing---");
+                const outputArray = stdout.toString();
+                stringValue = outputArray.replace(/\x00/g, '');
+                const out = stringValue.split(",");
+                trimmedArray = out.map(value => value.trim());
+                const keys = ['meanlocaljitter','meanlocalabsolute','meanrap','meanppq5','meanddp','meanlocalshimmer','meanlocaldb','meanapq3','meanaqpq5','meanapq11','meandda','meanpitch','meansdpitch','minpitch', 'maxpitch','meanHNR','meansdHNR','f1','f2','f3','f4'];
+                const outputObject = {};
+                keys.forEach((key, index) => {
+                    const numericValue = trimmedArray[index];
+                    outputObject[key] = isNaN(numericValue) ? null : numericValue;
+                })
+                const jsonResponse = JSON.stringify(outputObject, null, 2);
+                parsedResponse = JSON.parse(jsonResponse);
+                console.log(jsonResponse);
+                if (stdout) {
+                    res.status(200).send({ response: "Success", data: parsedResponse });
+                    const audio = req.file.filename;
+                    const directoryPath = __basedir + "/uploads/assets/audios/";
+                    fs.unlink(directoryPath+audio, (err) => {
+                      if (err) {
+                        console.error(err)
+                        return
+                      }else{
+                        console.log("deleted audio successfully");
+                      }
+                    });
+                } else
+                    if (stderr) {
+                        res.status(500).send({ response: "failed", message: 'Praat command encountered an error' });
+                        return;
+                    } else {
+                        res.status(500).send({ response: "failed", message: 'Error executing Praat command' });
+                        return;
+                    }
+            });
         }
-        if (stderr) {
-            console.error(`Praat command stderr: ${stderr}`);
-            res.status(500).send({ response: "failed", message:'Praat command encountered an error'});
-            return;
-        }
-        const parsedOutput = JSON.parse(stdout);
-        res.send({ response: "Success",data:parsedOutput});
-    });
-}
-} catch (error) {
+    } catch (error) {
         console.log(error);
-}}
+    }
+}
 
 module.exports = {
-    addAnalysis,getAllanalysis,updateAnalysis,deleteAnalysis,testAudio
+    addAnalysis, getAllanalysis, updateAnalysis, deleteAnalysis, getAudioAnalysis
 }

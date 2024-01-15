@@ -14,6 +14,6 @@ router.get('/analysis/list_of_analysis/:id', controller.getAllanalysis);
 router.get('/analysis/delete_analysis/:id', controller.deleteAnalysis);
 
 // GET: [ ADD AN AUDIO FOR PRAAT ANALYSIS ] -->
-router.post('/audio/test_audio',uploadFile.single("audio"), controller.testAudio);
+router.post('/audio/get_analysis',uploadFile.single("audio"), controller.getAudioAnalysis);
 
 module.exports= router;

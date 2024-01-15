@@ -12,7 +12,7 @@ const User = db.user;
 const Role  = db.role;
 
 
-// [role 1: Admin ,role 2: App User ]
+// [role 1: Admin ,role 2: Therapist ]
 const SignUp = async (req, res) => {
     // Save User to Database
     try {
