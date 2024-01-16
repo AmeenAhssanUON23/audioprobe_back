@@ -14,7 +14,7 @@ router.post('/auth/sign_up',validate('register'),controller.checkDuplicateUserna
 router.post('/auth/sign_in',validate('login'), controller.SignIn);
 
 // GET: [ FETCH ALL USERS ] -->
-router.get('/users', isAdmin,controller.getAllUsers);
+router.get('/users',controller.getAllUsers);
 
 // POST: [ UPDATE USER DATA ] -->
 router.post('/users/update_users', controller.updateUser);
