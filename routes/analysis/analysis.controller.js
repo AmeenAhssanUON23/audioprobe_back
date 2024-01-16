@@ -105,12 +105,12 @@ const deleteAnalysis = async (req, res) => {
 
 const getAudioAnalysis = async (req, res) => {
     const praatScriptPath = __basedir + "/praat_scripts/t10.praat";
-    // const audioFilePath = __basedir + `/uploads/assets/audios/`;
-    const audioFilePath = `${req.protocol}://${req.get('host')}/uploads/assets/audios/${req.file.filename}`;
+    const audioFilePath = __basedir + `/uploads/assets/audios/`;
+    // const audioFilePath = `${req.protocol}://${req.get('host')}/uploads/assets/audios/${req.file.filename}`;
     const praatFilePath = __basedir + `/node_modules/praat-scripts/`;
     try {
         console.log(`${audioFilePath+req.file.filename}`);
-        const command = ` praat ${praatScriptPath+" "+audioFilePath}`;
+        const command = ` praat ${praatFilePath+"t10.praat"+" "+audioFilePath}`;
         console.log(command);
         if (req.file == undefined) {
             return res.send({ response: "failed", message: "You must select an Audio file" });
