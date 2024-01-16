@@ -15,8 +15,7 @@ const audioFilter = (req, file, cb) => {
 
 var storage = diskStorage({
   destination: (req, file, cb) => {
-    // const destinationPath = __basedir + "/public/";
-    const destinationPath = `${req.protocol}://${req.get('host')}/public/`;
+    const destinationPath = __basedir + "/public/assets/audios/";
     console.log("Destination Path:", destinationPath);
     cb(null,destinationPath);
   },
