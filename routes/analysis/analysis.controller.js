@@ -106,7 +106,7 @@ const deleteAnalysis = async (req, res) => {
 const getAudioAnalysis = async (req, res) => {
     const praatScriptPath = __basedir + "/praat_scripts/t10.praat";
     // const audioFilePath = __basedir + `/uploads/assets/audios/`;
-    const audioFilePath = __basedir + `/uploads/assets/audios/`;
+    const audioFilePath = __basedir + `/uploads/assets/audios`+ "\"";
     const praatFilePath = __basedir + `/node_modules/praat-scripts/`;
     try {
         console.log(`${audioFilePath+req.file.filename}`);
