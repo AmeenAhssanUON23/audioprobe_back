@@ -105,9 +105,9 @@ const deleteAnalysis = async (req, res) => {
 
 const getAudioAnalysis = async (req, res) => {
     const praatScriptPath = __basedir + "/praat_scripts/t10.praat";
-    const audioFilePath = __basedir + `/uploads/assets/audios/`;
-    // const audioFilePath = `${req.protocol}://${req.get('host')}/uploads/assets/audios/${req.file.filename}`;
-    const praatFilePath = __basedir + `/node_modules/praat-scripts/`;
+    // const audioFilePath = __basedir + `/uploads/assets/audios/`;
+    const audioFilePath = `${req.protocol}://${req.get('host')}/uploads/assets/audios/`;
+    const praatFilePath = `${req.protocol}://${req.get('host')}//node_modules/praat-scripts/`;
     try {
         console.log(`${audioFilePath+req.file.filename}`);
         const command = ` praat ${praatFilePath+"t10.praat"+" "+audioFilePath}`;
