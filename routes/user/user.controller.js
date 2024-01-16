@@ -1,6 +1,5 @@
 const db = require('../../config/connection');
 const Sequelize = require('sequelize');
-const bcrypt = require('bcrypt');
 const cache = require('../../utils/cache');
 const jwtConfig = require('../../config/jwt');
 const jwt = require('../../utils/jwt');
@@ -20,7 +19,7 @@ const SignUp = async (req, res) => {
             username: req.body.username,
             fullname: req.body.fullname,
             email: req.body.email,
-            password: bcrypt.hashSync(req.body.password, 8),
+            // password: bcrypt.hashSync(req.body.password, 8),
             mobile: req.body.mobile,
             roleId:req.body.roleId
           });
@@ -44,16 +43,16 @@ const SignIn = async (req, res) => {
             message: "Invalid UserName or Password!"
           });
         }
-        var passwordIsValid = bcrypt.compareSync(
-          req.body.password,
-          user.password
-        );
-        if (!passwordIsValid) {
-          return res.status(401).send({
-            response: "failed",
-            message: "Invalid UserName or Password!"
-          });
-        }
+        // var passwordIsValid = bcrypt.compareSync(
+        //   req.body.password,
+        //   user.password
+        // );
+        // if (!passwordIsValid) {
+        //   return res.status(401).send({
+        //     response: "failed",
+        //     message: "Invalid UserName or Password!"
+        //   });
+        // }
         const token = jwt.createToken({ id: user.id, username: user.username });
         Role.findOne({
             where:{
@@ -186,10 +185,10 @@ const checkDuplicateUsernameOrEmail = (req, res, next) => {
         email: req.body.email,
         mobile: req.body.mobile,
       }
-      if(req.body.password){
-        const hashedPassword = await bcrypt.hash(req.body.password, 8);
-        options.password = hashedPassword
-      }
+      // if(req.body.password){
+      //   const hashedPassword = await bcrypt.hash(req.body.password, 8);
+      //   options.password = hashedPassword
+      // }
       const result = await User.update( options ,
         {
           where: { id: req.body.id }
