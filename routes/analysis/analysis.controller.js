@@ -15,7 +15,7 @@ const addAnalysis = async (req, res) => {
         });
         res.send({
             response: "success"
-            , message: "Analysis Report added successfully.."
+            ,message: "Analysis Report added successfully.."
         });
     } catch (error) {
         console.log(error)

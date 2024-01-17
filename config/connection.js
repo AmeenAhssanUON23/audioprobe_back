@@ -89,6 +89,10 @@ db.clients.belongsToMany(db.user, {
   foreignKey: "clientId",
 });
 
+db.user.hasMany(db.appointments);
+db.appointments.belongsTo(db.user);
+db.clients.hasMany(db.appointments);
+db.appointments.belongsTo(db.clients);
 
 // <-----clients - analysis Association------->
 db.clients.hasMany(db.analysis, {
@@ -100,8 +104,9 @@ db.clients.hasMany(db.analysis, {
 db.analysis.belongsTo(db.clients);
 
 
+
 // SYNCING DATABASE--
-db.sequelize.sync({ alter: false, force: false })
+db.sequelize.sync({ alter: true, force: false })
   .then((result) => {
     // userRoleinitial();
     console.log("--sync done--");
