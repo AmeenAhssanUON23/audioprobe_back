@@ -98,10 +98,10 @@ db.analysis.belongsTo(db.clients);
 
 
 // SYNCING DATABASE--
-db.sequelize.sync({ alter: true, force: true })
+db.sequelize.sync({ alter: false, force: false })
   .then((result) => {
-    userRoleinitial();
-    versionInitial();
+    // userRoleinitial();
+    // versionInitial();
     console.log("--sync done--");
   }).catch(err => {
     console.log(`error:${err}`);
