@@ -80,23 +80,23 @@ db.clients.belongsTo(db.user);
 
 
 // <-----user - clients Association------->
-db.user.hasMany(db.appointments);
-db.appointments.belongsTo(db.user);
+
 db.user.belongsToMany(db.clients, {
   through: { model: db.appointments, unique: false },
   foreignKey: "userId",
 });
 
 
-db.clients.hasMany(db.appointments);
-db.appointments.belongsTo(db.clients);
+
 db.clients.belongsToMany(db.user, {
   through: { model: db.appointments, unique: false },
   foreignKey: "clientId",
 });
 
-
-
+db.user.hasMany(db.appointments);
+db.appointments.belongsTo(db.user);
+db.clients.hasMany(db.appointments);
+db.appointments.belongsTo(db.clients);
 // <-----clients - analysis Association------->
 db.clients.hasMany(db.analysis, {
   foreignKey: {
