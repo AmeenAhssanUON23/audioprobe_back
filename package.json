@@ -7,6 +7,7 @@
     "dev": "nodemon ./bin/www"
   },
   "dependencies": {
+    "argon2": "^0.31.2",
     "cache": "^3.0.0",
     "child_process": "^1.0.2",
     "cookie-parser": "~1.4.4",

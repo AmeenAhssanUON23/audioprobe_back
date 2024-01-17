@@ -9,6 +9,8 @@ const { exec } = require('child_process');
 const { extname } = require('path');
 const User = db.user;
 const Role  = db.role;
+const argon2 = require('argon2');
+
 
 
 // [role 1: Admin ,role 2: Therapist ]
@@ -19,7 +21,7 @@ const SignUp = async (req, res) => {
             username: req.body.username,
             fullname: req.body.fullname,
             email: req.body.email,
-            // password: bcrypt.hashSync(req.body.password, 8),
+            password: argon2.hash(req.body.password),
             mobile: req.body.mobile,
             roleId:req.body.roleId
           });
@@ -43,16 +45,16 @@ const SignIn = async (req, res) => {
             message: "Invalid UserName or Password!"
           });
         }
-        // var passwordIsValid = bcrypt.compareSync(
-        //   req.body.password,
-        //   user.password
-        // );
-        // if (!passwordIsValid) {
-        //   return res.status(401).send({
-        //     response: "failed",
-        //     message: "Invalid UserName or Password!"
-        //   });
-        // }
+        var passwordIsValid = argon2.verify(
+          req.body.password,
+          user.password
+        );
+        if (!passwordIsValid) {
+          return res.status(401).send({
+            response: "failed",
+            message: "Invalid UserName or Password!"
+          });
+        }
         const token = jwt.createToken({ id: user.id, username: user.username });
         Role.findOne({
             where:{
