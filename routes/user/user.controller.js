@@ -1,6 +1,6 @@
 const db = require('../../config/connection');
 const Sequelize = require('sequelize');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const cache = require('../../utils/cache');
 const jwtConfig = require('../../config/jwt');
 const jwt = require('../../utils/jwt');
