@@ -34,10 +34,9 @@ const SignUp = async (req, res) => {
 const SignIn = async (req, res) => {
     await User.findOne({
       where: {
-        username: req.body.username,
+        username: req.body.username
       }
-    })
-      .then(async user => {
+    }).then(async user => {
         if (!user) {
           return res.status(404).send({
             response: "failed",
@@ -64,6 +63,9 @@ const SignIn = async (req, res) => {
             response: "success"
             , message: "user logged in successfully..",
             id:user.id,
+            name:user.fullname,
+            email:user.email,
+            mobile:user.mobile,
             roleId: role.id,
             role: role.name,
             access_token: token,
