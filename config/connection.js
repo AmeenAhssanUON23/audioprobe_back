@@ -80,23 +80,12 @@ db.clients.belongsTo(db.user);
 
 
 // <-----user - clients Association------->
-
-db.user.belongsToMany(db.clients, {
-  through: { model: db.appointments, unique: false },
-  foreignKey: "userId",
-});
-
-
-
-db.clients.belongsToMany(db.user, {
-  through: { model: db.appointments, unique: false },
-  foreignKey: "clientId",
-});
-
 db.user.hasMany(db.appointments);
 db.appointments.belongsTo(db.user);
+
 db.clients.hasMany(db.appointments);
 db.appointments.belongsTo(db.clients);
+
 // <-----clients - analysis Association------->
 db.clients.hasMany(db.analysis, {
   foreignKey: {
@@ -109,10 +98,10 @@ db.analysis.belongsTo(db.clients);
 
 
 // SYNCING DATABASE--
-db.sequelize.sync({ alter: false, force: false })
+db.sequelize.sync({ alter: true, force: true })
   .then((result) => {
-    // userRoleinitial();
-    // versionInitial();
+    userRoleinitial();
+    versionInitial();
     console.log("--sync done--");
   }).catch(err => {
     console.log(`error:${err}`);
