@@ -80,19 +80,22 @@ db.clients.belongsTo(db.user);
 
 
 // <-----user - clients Association------->
+db.user.hasMany(db.appointments);
+db.appointments.belongsTo(db.user);
 db.user.belongsToMany(db.clients, {
   through: { model: db.appointments, unique: false },
   foreignKey: "userId",
 });
+
+
+db.clients.hasMany(db.appointments);
+db.appointments.belongsTo(db.clients);
 db.clients.belongsToMany(db.user, {
   through: { model: db.appointments, unique: false },
   foreignKey: "clientId",
 });
 
-db.user.hasMany(db.appointments);
-db.appointments.belongsTo(db.user);
-db.clients.hasMany(db.appointments);
-db.appointments.belongsTo(db.clients);
+
 
 // <-----clients - analysis Association------->
 db.clients.hasMany(db.analysis, {
@@ -106,9 +109,10 @@ db.analysis.belongsTo(db.clients);
 
 
 // SYNCING DATABASE--
-db.sequelize.sync({ alter: false, force: false })
+db.sequelize.sync({ alter: true, force: true })
   .then((result) => {
-    // userRoleinitial();
+    userRoleinitial();
+    versionInitial();
     console.log("--sync done--");
   }).catch(err => {
     console.log(`error:${err}`);
@@ -126,6 +130,21 @@ async function userRoleinitial() {
         name: "Therapist"
       }
     ]
+    )
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+async function versionInitial() {
+  try {
+    await db.version.create(
+      {
+        id: 1,
+        status: "Active",
+        version: "1",
+        supportingVersion:"1",
+        supportNumber: "07388408419"
+      },
     )
   } catch (error) {
     console.log(error.message);
