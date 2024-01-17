@@ -7,7 +7,7 @@ const addClients = async (req, res) => {
     try {
         await clients.create({
             firstName: req.body.firstName,
-            lastName: req.body.lastname,
+            lastName: req.body.lastName,
             gender: req.body.gender,
             age: req.body.age,
             mobile: req.body.mobile,
