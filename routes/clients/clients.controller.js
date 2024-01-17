@@ -59,10 +59,11 @@ const updateClients = async (req, res) => {
 
 const getAllClients = async (req, res) => {
     const {page, size, name} = req.query;
-    var filterbyname = name  ? { name: { [Op.like]: `%${name}%` } } : null;
+    var filterbyname = name  ? { firstName: { [Op.like]: `%${name}%` } } : null;
+    var filterbylname = name  ? { lastName: { [Op.like]: `%${name}%` } } : null;
     var filterbyid =  name ? { id: { [Op.eq]: name } } : null;
     var condition = name ? { [Op.or]: [
-        filterbyname,filterbyid
+        filterbyname,filterbylname,filterbyid
     ]} :null;
     const { limit, offset } = pg.getPagination(page, size);
     await clients.findAndCountAll({
