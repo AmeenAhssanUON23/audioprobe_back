@@ -33,7 +33,7 @@ const updateClients = async (req, res) => {
         await clients.update(
             {
             firstName: req.body.firstName,
-            lastName: req.body.lastname,
+            lastName: req.body.lastName,
             gender: req.body.gender,
             age: req.body.age,
             mobile: req.body.mobile,
