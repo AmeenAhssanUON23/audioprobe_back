@@ -9,6 +9,7 @@ const addAppointments = async (req, res) => {
             review: req.body.review,
             clientId: req.body.clientId,
             userId: req.body.userId,
+            bookingTime:req.body.bookingTime
         });
         res.send({
             response: "success"
@@ -31,6 +32,7 @@ const updateAppointments = async (req, res) => {
                 review: req.body.review,
                 clientId: req.body.clientId,
                 userId: req.body.userId,
+                bookingTime:req.body.bookingTime
             },
             {
                 where: { id: req.body.id }
