@@ -5,24 +5,49 @@ const { Op } = require("sequelize");
 
 const addAppointments = async (req, res) => {
     try {
+        // Check if the client already has an appointment on the specified day
+        const existingAppointment = await appointments.findOne({
+            where: {
+                clientId: req.body.clientId,
+                bookingTime: {
+                    [Op.between]: [
+                        new Date(req.body.bookingTime),
+                        new Date(req.body.bookingTime).setHours(23, 59, 59, 999), // Set end of the day
+                    ],
+                },
+            },
+        });
+
+        if (existingAppointment) {
+            // If an appointment already exists for the client on the specified day
+            res.send({
+                response: "failed",
+                message: "Client already has an appointment on this day.",
+            });
+            return;
+        }
+
+        // If no existing appointment, create a new one
         await appointments.create({
             review: req.body.review,
             clientId: req.body.clientId,
             userId: req.body.userId,
-            bookingTime:req.body.bookingTime
+            bookingTime: req.body.bookingTime,
         });
+
         res.send({
-            response: "success"
-            , message: "Appointments added successfully.."
+            response: "success",
+            message: "Appointment added successfully.",
         });
     } catch (error) {
-        console.log(error)
+        console.log(error);
         res.send({
-            response: "failed"
-            , message: error.message
+            response: "failed",
+            message: error.message,
         });
     }
-}
+};
+
 
 
 const updateAppointments = async (req, res) => {
@@ -32,7 +57,7 @@ const updateAppointments = async (req, res) => {
                 review: req.body.review,
                 clientId: req.body.clientId,
                 userId: req.body.userId,
-                bookingTime:req.body.bookingTime
+                bookingTime: req.body.bookingTime
             },
             {
                 where: { id: req.body.id }
