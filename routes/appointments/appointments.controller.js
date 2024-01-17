@@ -77,17 +77,34 @@ const updateAppointments = async (req, res) => {
 
 
 const getAllAppointments = async (req, res) => {
-    const { page, size, startdte, enddte } = req.query;
+    const { page, size, startdte, enddte, month, year } = req.query;
     const { limit, offset } = pg.getPagination(page, size);
-    var filterbydate = startdte ? { createdAt: { [Op.between]: [startdte, enddte] } } : null;
+    const firstDayOfMonth = new Date(year, month - 1, 1);
+    const lastDayOfMonth = new Date(year, month, 0);
+    var filterbydate;
+    if (month && year) {
+        filterbydate = {
+            createdAt: {
+                [Op.between]: [firstDayOfMonth, lastDayOfMonth],
+            },
+        };
+    } else if (startdte && enddte) {
+        filterbydate = {
+            createdAt: {
+                [Op.between]: [startdte, enddte],
+            },
+        };
+    } else {
+        filterbydate = null;
+    }
     await appointments.findAndCountAll({
         where: filterbydate,
-        limit, offset
+        limit,
+        offset,
+    }).then(data => {
+        const response = pg.getPagingData(data, page, limit);
+        res.send(response);
     })
-        .then(data => {
-            const response = pg.getPagingData(data, page, limit);
-            res.send(response);
-        })
         .catch(err => {
             res.send({
                 response: "failed"
