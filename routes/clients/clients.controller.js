@@ -11,7 +11,8 @@ const addClients = async (req, res) => {
             gender: req.body.gender,
             age: req.body.age,
             mobile: req.body.mobile,
-            address: req.body.address
+            address: req.body.address,
+            userId:req.body.userId
         });
         res.send({
             response: "success"
@@ -36,7 +37,8 @@ const updateClients = async (req, res) => {
             gender: req.body.gender,
             age: req.body.age,
             mobile: req.body.mobile,
-            address: req.body.address
+            address: req.body.address,
+            userId:req.body.userId
             },
             {
                 where: { id: req.body.id }
