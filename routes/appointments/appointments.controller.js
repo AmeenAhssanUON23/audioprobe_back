@@ -40,8 +40,10 @@ const addAppointments = async (req, res) => {
             return;
         }
 
-        await dbavailability.update({
+         dbavailability.update({
             availableSlots: availability.availableSlots - 1,
+        },{
+            where: { id: availability.id }
         });
 
         // Create a new appointment
