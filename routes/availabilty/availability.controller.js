@@ -27,6 +27,7 @@ const addAvailability = async (req, res) => {
         await availability.create({
             date: req.body.date,
             slots: req.body.slots,
+            availableSlots: req.body.availableSlots,
             userId: req.body.userId
         });
         res.send({
@@ -50,6 +51,7 @@ const updateAvailability = async (req, res) => {
             {
                 date: req.body.date,
                 slots: req.body.slots,
+                availableSlots: req.body.availableSlots,
                 userId: req.body.userId
             },
             {

@@ -98,7 +98,7 @@ db.analysis.belongsTo(db.clients);
 
 
 // SYNCING DATABASE--
-db.sequelize.sync({ alter: true, force: false })
+db.sequelize.sync({ alter: false, force: false })
   .then((result) => {
     // userRoleinitial();
     // versionInitial();
