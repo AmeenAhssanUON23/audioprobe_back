@@ -142,10 +142,11 @@ const deleteAppointments = async (req, res) => {
 
 const getdashboard = async (req, res) => {
     var datenow = new Date();
+    datenow.setHours(0, 0, 0, 0);
     try {
         await appointments.findAll({
             where: {   bookingTime: {
-                [Op.eq]: datenow,
+                [Op.between]: [datenow,new Date(datenow.getTime() + 24 * 60 * 60 * 1000)],
             }}
         }).then((result) => {
             res.status(200).send({
