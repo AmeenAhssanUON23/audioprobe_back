@@ -14,5 +14,7 @@ router.post('/appointments/update_appointments', controller.updateAppointments);
 // GET: [ DELETE A APPOINTMENTS ] -->
 router.get('/appointments/delete_appointments/:id', controller.deleteAppointments);
 
+// GET: [ GET DASHBOARD ] -->
+router.get('/get_dashboard', controller.getdashboard);
 
 module.exports= router;

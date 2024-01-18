@@ -84,13 +84,13 @@ const getAllAppointments = async (req, res) => {
     var filterbydate;
     if (month && year) {
         filterbydate = {
-            createdAt: {
+            bookingTime: {
                 [Op.between]: [firstDayOfMonth, lastDayOfMonth],
             },
         };
     } else if (startdte && enddte) {
         filterbydate = {
-            createdAt: {
+            bookingTime: {
                 [Op.between]: [startdte, enddte],
             },
         };
@@ -140,6 +140,26 @@ const deleteAppointments = async (req, res) => {
 }
 
 
+const getdashboard = async (req, res) => {
+    var datenow = new Date();
+    try {
+        await appointments.findAll({
+            where: {   bookingTime: {
+                [Op.eq]: datenow,
+            }}
+        }).then((result) => {
+            res.status(200).send({
+                response: "success",
+                appointments_today: result.length });
+        });
+    } catch (error) {
+        res.send({
+            response: "failed"
+            , message: error.message
+        })
+    }
+}
+
 module.exports = {
-    addAppointments, getAllAppointments, updateAppointments, deleteAppointments
+    addAppointments, getAllAppointments, updateAppointments, deleteAppointments,getdashboard
 }
