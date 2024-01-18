@@ -1,19 +1,13 @@
-// var express = require('express');
-// var router = express.Router();
-// const controller = require('../staff/staff.controller');
-// // const isStaff = require('../../middleware/isStaff');
-// const { uploadServiceImage } = require("../../middleware/upload");
+var express = require('express');
+var router = express.Router();
+const validate = require('../../utils/validator'); 
+const controller = require('../staff/staff.controller');
 
-// // GET: [ FETCH ALL TECHNICIANS WITH SERVICE REQUESTS ] -->
-// router.get('/users/list_of_technicians', controller.gettechnicianList);
 
-// // GET: [ FETCH ALL SERVICE REQUESTS WITH TECHNICIAN ] -->
-// router.get('/users/list_of_service/:id', isTechnician, controller.getServiceRequestsList);
+// POST: [ SIGNUP STAFF ] -->
+router.post('/staff/sign_up',validate('staff_register'),controller.SignUp);
 
-// // GET: [ FETCH ALL SERVICE REQUESTS COUNT ] -->
-// router.get('/service/service_count/:id', controller.getServiceCount);
+// POST: [ SIGNIN STAFF ] -->
+router.post('/staff/sign_in',validate('login'), controller.SignIn);
 
-// // GET: [ FETCH DASHBOARD ] -->
-// router.get('/service/dashboard/:id', controller.getdashboard);
-
-// module.exports = router;
+module.exports = router;

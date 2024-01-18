@@ -12,7 +12,16 @@ const getSchema = (type) => {
                 roleId: Joi.number()
             })
         }
-       
+       case 'staff_register':{
+        return Joi.object().keys({
+            username: Joi.string().required().min(4),
+            fullname: Joi.string().required().min(4),
+            password: Joi.string().required().min(4),
+            email: Joi.string().required().email(),
+            mobile: Joi.string().required(),
+            userId: Joi.number()
+        })
+       }
         case 'login': {
             return Joi.object().keys({
                 username: Joi.string().required(),
