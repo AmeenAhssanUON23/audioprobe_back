@@ -4,7 +4,7 @@ const pg = require('../../utils/pagination');
 const User = db.user;
 const staff = db.staff;
 const { Op } = require("sequelize");
-
+const bcrypt = require('bcryptjs');
 
 
 
