@@ -5,9 +5,9 @@ const controller = require('../staff/staff.controller');
 
 
 // POST: [ SIGNUP STAFF ] -->
-router.post('/staff/sign_up',validate('staff_register'),controller.SignUp);
+router.post('/staff/sign_up',validate('staff_register'),controller.staffSignUp);
 
 // POST: [ SIGNIN STAFF ] -->
-router.post('/staff/sign_in',validate('login'), controller.SignIn);
+router.post('/staff/sign_in',validate('login'), controller.staffSignIn);
 
 module.exports = router;
