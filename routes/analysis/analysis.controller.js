@@ -2,7 +2,7 @@ const db = require('../../config/connection');
 const analysis = db.analysis;
 const pg = require('../../utils/pagination');
 const { exec } = require('child_process');
-const { extname } = require('path');
+const path = require('path');
 const { Op } = require("sequelize");
 const fs = require("fs");
 
@@ -104,11 +104,11 @@ const deleteAnalysis = async (req, res) => {
 
 
 const getAudioAnalysis = async (req, res) => {
-    const audioFilePath = __basedir + `/uploads/assets/audios/`;
-    const praatFilePath = __basedir + `/node_modules/praat-scripts/`;
+    const audioFilePath = path.join(__dirname, 'uploads', 'assets', 'audios');
+    const praatFilePath = path.join(__dirname, 'node_modules', 'praat-scripts');
     try {
-        console.log(`${audioFilePath+req.file.filename}`);
-        const command = `praat ${praatFilePath+"t10.praat"+" "+audioFilePath+req.file.filename}`;
+        console.log(path.join(audioFilePath, req.file.filename));
+        const command = `praat ${praatFilePath+"t10.praat"+" "+audioFilePath}`;
         console.log(command);
         if (req.file == undefined) {
             return res.send({ response: "failed", message: "You must select an Audio file" });
