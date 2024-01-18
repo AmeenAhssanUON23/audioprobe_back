@@ -19,7 +19,7 @@ const addAppointments = async (req, res) => {
         });
 
         if (existingAppointment) {
-            res.send({
+            res.status(200).send({
                 response: "failed",
                 message: "Client already has an appointment on this day.",
             });
@@ -33,7 +33,7 @@ const addAppointments = async (req, res) => {
         });
 
         if (!availability || availability.availableSlots <= 0) {
-            res.send({
+            res.status(200).send({
                 response: "failed",
                 message: "No available slots for the specified day.",
             });
@@ -52,13 +52,13 @@ const addAppointments = async (req, res) => {
             bookingTime: req.body.bookingTime,
         });
 
-        res.send({
+        res.status(200).send({
             response: "success",
             message: "Appointment added successfully.",
         });
     } catch (error) {
         console.log(error);
-        res.send({
+        res.status(500).send({
             response: "failed",
             message: error.message,
         });
@@ -81,12 +81,12 @@ const updateAppointments = async (req, res) => {
                 where: { id: req.body.id }
             }
         )
-        res.send({
+        res.status(200).send({
             response: "success"
             , message: "Appointments updated successfully.."
         });
     } catch (error) {
-        res.send({
+        res.status(500).send({
             response: "failed"
             , message: error.message
         });
