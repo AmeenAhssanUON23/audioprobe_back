@@ -65,7 +65,7 @@ const staffSignIn = async (req, res) => {
             email:staff.email,
             mobile:staff.mobile,
             therapistId: user.id,
-            therapist: user.name,
+            therapist: user.fullname,
             access_token: token,
             expires_in: jwtConfig.ttl
           });
