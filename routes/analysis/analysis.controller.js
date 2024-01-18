@@ -104,11 +104,11 @@ const deleteAnalysis = async (req, res) => {
 
 
 const getAudioAnalysis = async (req, res) => {
-    const audioFilePath = path.join(__dirname, 'uploads', 'assets', 'audios');
-    const praatFilePath = path.join(__dirname, 'node_modules', 'praat-scripts');
+    const audioFilePath = path.join(__dirname,'audios');
+    const praatFilePath = path.join(__dirname, 'praat-scripts');
     try {
         console.log(path.join(audioFilePath, req.file.filename));
-        const command = `praat ${praatFilePath+"t10.praat"+" "+audioFilePath+"/"}`;
+        const command = `praat ${praatFilePath+"/t10.praat"+" "+audioFilePath+"/"}`;
         console.log(command);
         if (req.file == undefined) {
             return res.send({ response: "failed", message: "You must select an Audio file" });
@@ -131,7 +131,7 @@ const getAudioAnalysis = async (req, res) => {
                 if (stdout) {
                     res.status(200).send({ response: "Success", data: parsedResponse });
                     const audio = req.file.filename;
-                    const directoryPath = __basedir + "/uploads/assets/audios/";
+                    const directoryPath = path.join(__basedir,"audios");
                     fs.unlink(directoryPath+audio, (err) => {
                       if (err) {
                         console.error(err)
