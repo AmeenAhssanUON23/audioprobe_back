@@ -16,7 +16,7 @@ const audioFilter = (req, file, cb) => {
 var storage = diskStorage({
   destination: (req, file, cb) => {
     console.log(__basedir);
-    cb(null, __basedir + "/analysis/audios/");
+    cb(null, __basedir + "/routes/analysis/audios/");
   },
   filename: (req, file, cb) => {
     cb(null, file.fieldname + '-' + Date.now() + extname(file.originalname));
