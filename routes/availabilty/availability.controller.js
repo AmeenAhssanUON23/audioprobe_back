@@ -8,10 +8,10 @@ const addAvailability = async (req, res) => {
         const existingAvailability = await availability.findOne({
             where: {
                 userId: req.body.userId,
-                start_time: {
+                date: {
                     [Op.between]: [
-                        new Date(req.body.starttime),
-                        new Date(req.body.endtime).setHours(23, 59, 59, 999), // Set end of the day
+                        new Date(req.body.date),
+                        new Date(req.body.date).setHours(23, 59, 59, 999), // Set end of the day
                     ],
                 },
             },
@@ -25,9 +25,8 @@ const addAvailability = async (req, res) => {
             return;
         }
         await availability.create({
-            day_of_week: req.body.day,
-            start_time: req.body.starttime,
-            end_time: req.body.endtime,
+            date: req.body.date,
+            slots: req.body.slots,
             userId: req.body.userId
         });
         res.send({
@@ -49,9 +48,8 @@ const updateAvailability = async (req, res) => {
     try {
         await availability.update(
             {
-                day_of_week: req.body.day,
-                start_time: req.body.starttime,
-                end_time: req.body.endtime,
+                date: req.body.date,
+                slots: req.body.slots,
                 userId: req.body.userId
             },
             {
@@ -79,13 +77,13 @@ const getAllAvailability = async (req, res) => {
     var filterbydate;
     if (month && year) {
         filterbydate = {
-            start_time: {
+            date: {
                 [Op.between]: [firstDayOfMonth, lastDayOfMonth],
             },
         };
     } else if (startdte && enddte) {
         filterbydate = {
-            start_time: {
+            date: {
                 [Op.between]: [startdte, enddte],
             },
         };
@@ -96,7 +94,9 @@ const getAllAvailability = async (req, res) => {
         where: filterbydate,
         limit,
         offset,
-    }).then(data => {
+    },{
+        order: [['date', 'DESC']]
+      }).then(data => {
         const response = pg.getPagingData(data, page, limit);
         res.send(response);
     })
