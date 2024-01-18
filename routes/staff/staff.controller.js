@@ -3,6 +3,9 @@ const db = require('../../config/connection');
 const pg = require('../../utils/pagination');
 const User = db.user;
 const staff = db.staff;
+const cache = require('../../utils/cache');
+const jwtConfig = require('../../config/jwt');
+const jwt = require('../../utils/jwt');
 const { Op } = require("sequelize");
 const bcrypt = require('bcryptjs');
 
@@ -19,7 +22,7 @@ const staffSignUp = async (req, res) => {
             mobile: req.body.mobile,
             userId:req.body.userId
           });
-        res.status(200).send({ response: "success", message: "User was registered successfully!" });
+        res.status(200).send({ response: "success", message: "Staff registered successfully!" });
     } catch (error) {
         res.status(500).send({ response: "failed", message: error.message });
     }

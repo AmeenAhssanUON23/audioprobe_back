@@ -24,7 +24,7 @@ const SignUp = async (req, res) => {
             mobile: req.body.mobile,
             roleId:req.body.roleId
           });
-        res.status(200).send({ response: "success", message: "User was registered successfully!" });
+        res.status(200).send({ response: "success", message: "User registered successfully!" });
     } catch (error) {
         res.status(500).send({ response: "failed", message: error.message });
     }
