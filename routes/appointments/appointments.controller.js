@@ -1,11 +1,11 @@
 const db = require('../../config/connection');
 const appointments = db.appointments;
+const availability = db.availabilty;
 const pg = require('../../utils/pagination');
 const { Op } = require("sequelize");
 
 const addAppointments = async (req, res) => {
     try {
-        // Check if the client already has an appointment on the specified day
         const existingAppointment = await appointments.findOne({
             where: {
                 clientId: req.body.clientId,
@@ -19,15 +19,32 @@ const addAppointments = async (req, res) => {
         });
 
         if (existingAppointment) {
-            // If an appointment already exists for the client on the specified day
             res.send({
                 response: "failed",
                 message: "Client already has an appointment on this day.",
             });
             return;
         }
+        const availability = await availability.findOne({
+            where: {
+                userId: req.body.userId,
+                date: new Date(req.body.bookingTime).toDateString(),
+            },
+        });
 
-        // If no existing appointment, create a new one
+        if (!availability || availability.availableSlots <= 0) {
+            res.send({
+                response: "failed",
+                message: "No available slots for the specified day.",
+            });
+            return;
+        }
+
+        await availability.update({
+            availableSlots: availability.availableSlots - 1,
+        });
+
+        // Create a new appointment
         await appointments.create({
             review: req.body.review,
             clientId: req.body.clientId,
@@ -47,6 +64,7 @@ const addAppointments = async (req, res) => {
         });
     }
 };
+
 
 
 
