@@ -79,13 +79,13 @@ const getAllAvailability = async (req, res) => {
     var filterbydate;
     if (month && year) {
         filterbydate = {
-            bookingTime: {
+            start_time: {
                 [Op.between]: [firstDayOfMonth, lastDayOfMonth],
             },
         };
     } else if (startdte && enddte) {
         filterbydate = {
-            bookingTime: {
+            start_time: {
                 [Op.between]: [startdte, enddte],
             },
         };
