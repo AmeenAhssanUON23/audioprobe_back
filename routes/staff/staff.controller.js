@@ -21,7 +21,7 @@ const staffSignUp = async (req, res) => {
           });
         res.status(200).send({ response: "success", message: "User was registered successfully!" });
     } catch (error) {
-        res.status(500).send({ response: "failed", message: err.message });
+        res.status(500).send({ response: "failed", message: error.message });
     }
 }
 
