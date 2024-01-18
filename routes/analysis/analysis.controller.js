@@ -108,7 +108,7 @@ const getAudioAnalysis = async (req, res) => {
     const praatFilePath = path.join(__dirname, 'node_modules', 'praat-scripts');
     try {
         console.log(path.join(audioFilePath, req.file.filename));
-        const command = `praat ${praatFilePath+"t10.praat"+" "+audioFilePath}`;
+        const command = `praat ${praatFilePath+"t10.praat"+" "+audioFilePath+"/"}`;
         console.log(command);
         if (req.file == undefined) {
             return res.send({ response: "failed", message: "You must select an Audio file" });
