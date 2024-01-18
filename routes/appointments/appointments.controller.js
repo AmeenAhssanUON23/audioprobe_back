@@ -44,7 +44,8 @@ const addAppointments = async (req, res) => {
             availableSlots: availability.availableSlots - 1,
         },{
             where: { id: availability.id }
-        });
+        }
+        );
 
         // Create a new appointment
         await appointments.create({
