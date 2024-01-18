@@ -1,6 +1,6 @@
 const db = require('../../config/connection');
 const appointments = db.appointments;
-const availability = db.availabilty;
+const dbavailability = db.availabilty;
 const pg = require('../../utils/pagination');
 const { Op } = require("sequelize");
 
@@ -25,7 +25,7 @@ const addAppointments = async (req, res) => {
             });
             return;
         }
-        const availability = await availability.findOne({
+        const availability = await dbavailability.findOne({
             where: {
                 userId: req.body.userId,
                 date: new Date(req.body.bookingTime).toDateString(),
@@ -40,7 +40,7 @@ const addAppointments = async (req, res) => {
             return;
         }
 
-        await availability.update({
+        await dbavailability.update({
             availableSlots: availability.availableSlots - 1,
         });
 
