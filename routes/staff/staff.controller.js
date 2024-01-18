@@ -17,7 +17,7 @@ const staffSignUp = async (req, res) => {
             email: req.body.email,
             password: bcrypt.hashSync(req.body.password, 8),
             mobile: req.body.mobile,
-            userId:req.body.roleId
+            userId:req.body.userId
           });
         res.status(200).send({ response: "success", message: "User was registered successfully!" });
     } catch (error) {
