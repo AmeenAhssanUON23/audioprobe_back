@@ -4,6 +4,7 @@ const pg = require('../../utils/pagination');
 const { exec } = require('child_process');
 const path = require('path');
 const { Op } = require("sequelize");
+const praat = require('praat-scripts');
 const fs = require("fs");
 const { setTimeout } = require('timers/promises');
 
@@ -158,6 +159,7 @@ const getAudioAnalysis = async (req, res) => {
         console.log(error);
     }
 }
+
 
 module.exports = {
     addAnalysis, getAllanalysis, updateAnalysis, deleteAnalysis, getAudioAnalysis
