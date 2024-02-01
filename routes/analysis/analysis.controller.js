@@ -113,7 +113,7 @@ const getAudioAnalysis = async (req, res) => {
         const command = `praat ${praatFilePath+"/t10.praat"+" "+audioFilePath+"/"}`;
         console.log(command);
         if (req.file == undefined) {
-            return res.send({ response: "failed", message: "You must select an Audio file" });
+            return res.send({ response: "failed", message: "You must -select an Audio file" });
         } else {
             exec(command, (error, stdout, stderr) => {
                 console.log("Audio executing---'"+stderr+"'");
