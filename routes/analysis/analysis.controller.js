@@ -116,7 +116,7 @@ const getAudioAnalysis = async (req, res) => {
             return res.send({ response: "failed", message: "You must -select an Audio file" });
         } else {
             exec(command, (error, stdout, stderr) => {
-                console.log("Audio executing---'"+stderr+"'");
+                console.log("Audio executing-->'"+stderr+"'");
                 const outputArray = stdout.toString();
                 stringValue = outputArray.replace(/\x00/g, '');
                 const out = stringValue.split(",");
