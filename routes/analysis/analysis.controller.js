@@ -4,7 +4,7 @@ const pg = require('../../utils/pagination');
 const { exec } = require('child_process');
 const path = require('path');
 const { Op } = require("sequelize");
-const praat = require('praat-scripts');
+const praatPath = '/app/.heroku/node/bin/praat'; 
 const fs = require("fs");
 const { setTimeout } = require('timers/promises');
 
@@ -110,7 +110,7 @@ const getAudioAnalysis = async (req, res) => {
     const praatFilePath = path.join(__dirname, 'praat-scripts');
     try {
         console.log(path.join(audioFilePath, req.file.filename));
-        const command = `praat ${praatFilePath+"/t10.praat"+" "+audioFilePath+"/"}`;
+        const command = `${praatPath} ${praatFilePath+"/t10.praat"+" "+audioFilePath+"/"}`;
         console.log(command);
         if (req.file == undefined) {
             return res.send({ response: "failed", message: "You must -select an Audio file" });
