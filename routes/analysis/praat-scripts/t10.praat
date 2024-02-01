@@ -5,7 +5,6 @@ form Enter Full Path + \
     sentence directory C:\Users\ameen\Praat\
 endform
 
-
 #Sets up array of files to run batch process on
 Create Strings as file list...  list 'directory$'*.wav
   number_files = Get number of strings
@@ -43,7 +42,7 @@ Create Strings as file list...  list 'directory$'*.wav
      meandda = Get shimmer (dda)... 0 0 0.0001 0.02 1.3 1.6
        
 
-#This part measures harmoncs to noise ratio
+#This part measures harmonics to noise ratio
      select Sound 'name$'
      To Harmonicity (cc)... 0.01 50 0.1 1
      meanHNR = Get mean... 0 0

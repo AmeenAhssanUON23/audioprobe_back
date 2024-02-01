@@ -5,6 +5,7 @@ const { exec } = require('child_process');
 const path = require('path');
 const { Op } = require("sequelize");
 const fs = require("fs");
+const { setTimeout } = require('timers/promises');
 
 const addAnalysis = async (req, res) => {
     try {
@@ -133,6 +134,8 @@ const getAudioAnalysis = async (req, res) => {
                     const audio = req.file.filename;
                     console.log(__basedir);
                     const directoryPath = path.join(__basedir,"routes","analysis","audios","/");
+                    console.log(directoryPath);
+                   setTimeout(100,
                     fs.unlink(directoryPath+audio, (err) => {
                       if (err) {
                         console.error(err)
@@ -140,7 +143,7 @@ const getAudioAnalysis = async (req, res) => {
                       }else{
                         console.log("deleted audio successfully");
                       }
-                    });
+                    }));
                 } else
                     if (stderr) {
                         res.status(500).send({ response: "failed", message: 'Praat command encountered an error' });
