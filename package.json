@@ -4,8 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "dev": "nodemon ./bin/www",
-    "heroku-prebuild": "wget -q -O - http://www.fon.hum.uva.nl/praat/praat6001_linux64.tar.gz | tar xz -C /app && ln -s /app/praat6001 /app/praat"
+    "dev": "nodemon ./bin/www"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
