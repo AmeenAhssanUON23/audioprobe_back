@@ -134,7 +134,7 @@ const getAudioAnalysis = async (req, res) => {
                     const audio = req.file.filename;
                     console.log(__basedir);
                     const directoryPath = path.join(__basedir,"routes","analysis","audios","/");
-                    console.log("dp--"+directoryPath);
+                    console.log("dp-->"+directoryPath);
                    setTimeout(100,
                     fs.unlink(directoryPath+audio, (err) => {
                       if (err) {
