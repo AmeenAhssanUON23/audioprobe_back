@@ -8,7 +8,7 @@ const {uploadFile} = require("../../middleware/upload");
 router.post('/analysis/add_analysis', controller.addAnalysis);
 
 // GET: [ FETCH ALL ANALYSIS WITH CLIENT FILTER ] -->
-router.get('/analysis/list_of_analysis/:id', controller.getAllanalysis);
+router.get('/analysis/list_of_analysis', controller.getAllanalysis);
 
 // GET: [ DELETE AN ANALYSIS ] -->
 router.get('/analysis/delete_analysis/:id', controller.deleteAnalysis);
@@ -16,4 +16,4 @@ router.get('/analysis/delete_analysis/:id', controller.deleteAnalysis);
 // GET: [ ADD AN AUDIO FOR PRAAT ANALYSIS ] -->
 router.post('/audio/get_analysis',uploadFile.single("audio"), controller.getAudioAnalysis);
 
-module.exports= router;
+module.exports = router;

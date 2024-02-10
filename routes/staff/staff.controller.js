@@ -16,10 +16,7 @@ const staffSignUp = async (req, res) => {
     try {
         await staff.create({
             username: req.body.username,
-            fullname: req.body.fullname,
-            email: req.body.email,
             password: bcrypt.hashSync(req.body.password, 8),
-            mobile: req.body.mobile,
             userId:req.body.userId
           });
         res.status(200).send({ response: "success", message: "Staff registered successfully!" });
@@ -61,9 +58,7 @@ const staffSignIn = async (req, res) => {
             response: "success"
             , message: "logged in successfully..",
             id:staff.id,
-            name:staff.fullname,
-            email:staff.email,
-            mobile:staff.mobile,
+            // name:staff.fullname,
             therapistId: user.id,
             therapist: user.fullname,
             access_token: token,

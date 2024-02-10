@@ -9,6 +9,7 @@ const pg = require('../../utils/pagination');
 const { exec } = require('child_process');
 const { extname } = require('path');
 const User = db.user;
+const staff = db.staff;
 const Role  = db.role;
 
 
@@ -23,8 +24,14 @@ const SignUp = async (req, res) => {
             password: bcrypt.hashSync(req.body.password, 8),
             mobile: req.body.mobile,
             roleId:req.body.roleId
-          });
+          }).then(async user => {
+            await staff.create({
+              username: req.body.username+".staff",
+              password: bcrypt.hashSync(req.body.password, 8),
+              userId:user.id
+            });
         res.status(200).send({ response: "success", message: "User registered successfully!" });
+      });
     } catch (error) {
         res.status(500).send({ response: "failed", message: error.message });
     }
@@ -158,29 +165,64 @@ const checkDuplicateUsernameOrEmail = (req, res, next) => {
         })
       })
     }
-  const getSubAdminList = async (req, res) => {
-    await User.findAll({
-      include: [{
-        model: Role,
-        attributes: [],
-        where: {
-          id: 2
-        }
-      }]
-    }).then((result) => {
-      res.send({
-        response: 'success',
-        data: result
-      })
-    }).catch(err => {
-      res.send({
-        response: "failed"
-        ,message: err.message
-      })
-    })
-  }
   
+
+    const updateUserPassword = async (req, res) => {
+      try {
+          const user = await User.findOne({
+              where: { id: req.body.id }
+          });
   
+          if (!user) {
+              return res.status(404).send({
+                  response: "failed",
+                  message: "User not found"
+              });
+          }
+  
+          const passwordIsValid = bcrypt.compareSync(
+              req.body.currentPassword,
+              user.password
+          );
+  
+          if (!passwordIsValid) {
+              return res.status(401).send({
+                  response: "failed",
+                  message: "Invalid current Password!"
+              });
+          }
+
+          if (req.body.newPassword) {
+              if (req.body.newPassword.length < 8) {
+                  return res.status(400).send({
+                      response: "failed",
+                      message: "New password must be at least 8 characters long"
+                  });
+              }              
+              const hashedPassword = await bcrypt.hash(req.body.newPassword, 8);
+              await User.update({ password: hashedPassword }, {
+                  where: { id: req.body.id }
+              });
+          } else {
+              return res.status(400).send({
+                  response: "failed",
+                  message: "New password is required"
+              });
+          }
+  
+          res.send({
+              response: "success",
+              message: "Password updated successfully"
+          });
+      } catch (error) {
+          res.status(500).send({
+              response: "failed",
+              message: error.message
+          });
+      }
+  };
+  
+
   const updateUser = async (req, res) => {
     try {
       const options = {
@@ -207,7 +249,6 @@ const checkDuplicateUsernameOrEmail = (req, res, next) => {
         , message: error.message
       });
     }
-    
   }
   
   const logOut = async (req, res) => {
@@ -278,7 +319,7 @@ const checkDuplicateUsernameOrEmail = (req, res, next) => {
     SignIn,
     getAllUsers,
     getUsersList,
-    getSubAdminList,
+    updateUserPassword,
     deleteUser,
     updateUser,
     getUserWithId,

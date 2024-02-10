@@ -3,7 +3,21 @@ const cache = require('../utils/cache');
 
 
 module.exports = async (req, res, next) => {
-
+    if (['/api/getVersion'].includes(req.originalUrl)) {
+        return next();
+    }
+    if (['/api/auth/sign_in'].includes(req.originalUrl)) {
+        return next();
+    }
+    if (['/api/auth/sign_up'].includes(req.originalUrl)) {
+        return next();
+    }
+    if (['/api/staff/sign_in'].includes(req.originalUrl)) {
+        return next();
+    }
+    if (['/api/staff/sign_up'].includes(req.originalUrl)) {
+        return next();
+    }
     let token = req.headers.authorization;
     if (token && token.startsWith('Bearer ')) {
         token = token.slice(7, token.length);

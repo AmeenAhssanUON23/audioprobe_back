@@ -24,9 +24,11 @@ const updateversion = async (req, res) => {
             version:req.body.version,
             supportingVersion:req.body.supportingVersion,
             supportNumber:req.body.supportNumber,
-        },{where: {
+        },{
+            where: {
             id: req.params.id
-        }});
+        }
+    });
         res.send({
             response: "success"
             , message: " version data updated successfully.."

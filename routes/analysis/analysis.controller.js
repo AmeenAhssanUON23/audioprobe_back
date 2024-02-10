@@ -51,12 +51,11 @@ const updateAnalysis = async (req, res) => {
     }
 }
 const getAllanalysis = async (req, res) => {
-    const { page, size, name } = req.query;
-    var filterbyname = name ? { name: { [Op.like]: `%${name}%` } } : null;
-    var filterbyid = name ? { id: { [Op.eq]: name } } : null;
-    var condition = name ? {
+    const { page, size, id } = req.query;
+    var filterbyid = id ? { clientId: { [Op.eq]: id } } : null;
+    var condition = id ? {
         [Op.or]: [
-            filterbyname, filterbyid
+             filterbyid
         ]
     } : null;
     const { limit, offset } = pg.getPagination(page, size);
@@ -107,7 +106,7 @@ const deleteAnalysis = async (req, res) => {
 const getAudioAnalysis = async (req, res) => {
     const audioFilePath = path.join(__dirname,'audios');
     const praatFilePath = path.join(__dirname, 'praat-scripts');
-    const praatPath = '/app/praat/praat'; 
+    const praatPath = 'praat '; 
     try {
         console.log(path.join(audioFilePath, req.file.filename));
         const command = `${praatPath} ${praatFilePath+"/t10.praat"+" "+audioFilePath+"/"}`;
@@ -116,7 +115,7 @@ const getAudioAnalysis = async (req, res) => {
             return res.send({ response: "failed", message: "You must -select an Audio file" });
         } else {
             exec(command, (error, stdout, stderr) => {
-                console.log("Audio executing-->'"+stderr+"'");
+                console.log("Audio executing---'"+stdout+"'");
                 const outputArray = stdout.toString();
                 stringValue = outputArray.replace(/\x00/g, '');
                 const out = stringValue.split(",");

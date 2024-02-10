@@ -19,6 +19,9 @@ router.get('/users',controller.getAllUsers);
 // POST: [ UPDATE USER DATA ] -->
 router.post('/users/update_users', controller.updateUser);
 
+// POST: [ UPDATE USER PASSWORD ] -->
+router.post('/users/update_password',controller.updateUserPassword);
+
 // GET: [ SIGNOUT USER ] -->
 router.get('/auth/log_out', controller.logOut);
 

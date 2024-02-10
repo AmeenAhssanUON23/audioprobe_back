@@ -4,7 +4,7 @@ const { extname } = require('path');
 
 
 const audioFilter = (req, file, cb) => {
-  console.log(file.mimetype);
+  console.log("filetype-"+ file.mimetype);
   if (file.mimetype === "audio/mpeg" ||
   file.mimetype === "audio/wave") {
     cb(null, true);
