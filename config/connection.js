@@ -1,19 +1,19 @@
-const { database, username, password, _host } = require('./database');
+const { database, username, password, host } = require('./database');
 const { Sequelize, DataTypes } = require('sequelize');
 
 
 // INITIALIZATION--
-const sequelize = new Sequelize(
-  "mysql://neut7t6lqvzzave0:yeez9b85n2t25vpo@h1use0ulyws4lqr1.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/rb9aumtr04c2cjd5",
-  {});
-// INITIALIZATION--
 // const sequelize = new Sequelize(
-//   database, username, password,
-//   {
-//     //port:25060,
-//     host: _host,
-//     dialect: "mysql", operatorsAliasis: false
-//   });
+//   "mysql://neut7t6lqvzzave0:yeez9b85n2t25vpo@h1use0ulyws4lqr1.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/rb9aumtr04c2cjd5",
+//   {});
+// INITIALIZATION--
+const sequelize = new Sequelize(
+  database, username, password,
+  {
+    //port:25060,
+    host: host,
+    dialect: "mysql", operatorsAliasis: false
+  });
 
 // AUTHENTICATION--
 sequelize.authenticate()
