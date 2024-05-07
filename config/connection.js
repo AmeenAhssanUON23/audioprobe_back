@@ -10,15 +10,14 @@ const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = new Sequelize(
   database, username, password,
   {
-    port:3306,
+    // port:3306,
     host: host,
-    dialect: "mysql", operatorsAliasis: false,
-dialectOptions: {
-    ssl: {
-      require: true, // Require SSL
-      rejectUnauthorized: false // Disable SSL certificate verification (for self-signed certificates)
+    dialect: "mysql", dialectOptions: {
+      ssl: {
+        require: true, // Require SSL
+        rejectUnauthorized: false // Disable SSL certificate verification (for self-signed certificates)
+      }
     }
-  }
   });
 
 // AUTHENTICATION--
