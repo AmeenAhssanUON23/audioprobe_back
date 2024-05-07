@@ -10,7 +10,7 @@ const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = new Sequelize(
   database, username, password,
   {
-    // port:3306,
+    port:3306,
     host: host,
     dialect: "mysql", dialectOptions: {
       ssl: {
