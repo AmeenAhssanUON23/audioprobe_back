@@ -12,7 +12,13 @@ const sequelize = new Sequelize(
   {
     port:3306,
     host: host,
-    dialect: "mysql", operatorsAliasis: false
+    dialect: "mysql", operatorsAliasis: false,
+dialectOptions: {
+    ssl: {
+      require: true, // Require SSL
+      rejectUnauthorized: false // Disable SSL certificate verification (for self-signed certificates)
+    }
+  }
   });
 
 // AUTHENTICATION--
